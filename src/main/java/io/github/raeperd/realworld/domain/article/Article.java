@@ -48,13 +48,13 @@ public class Article { // JPA 결합되어 있는 엔티티 클래스
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false))
     // TODO("다대다 관계를 1:다 다:1 로 해소)
     @ManyToMany(fetch = EAGER, cascade = PERSIST)
-    private Set<User> userFavorited = new HashSet<>();
+    Set<User> userFavorited = new HashSet<>();
 
     @OneToMany(mappedBy = "article", cascade = {PERSIST, REMOVE})
     private Set<Comment> comments = new HashSet<>();
 
     @Transient // 데이터베이스에 매핑되지 않는다.
-    private boolean favorited = false; // 안티 패턴
+    boolean favorited = false; // 안티 패턴
 
     // 생성자
     public Article(User author, ArticleContents contents) {
@@ -83,7 +83,7 @@ public class Article { // JPA 결합되어 있는 엔티티 클래스
 
     public Comment addComment(User author, String body) { // 매개변수 이름 변경
         final var commentToAdd = new Comment(this, author, body);
-        comments.add(commentToAdd);
+        comments.add(commentToAdd); // 상태
         return commentToAdd;
     }
 
