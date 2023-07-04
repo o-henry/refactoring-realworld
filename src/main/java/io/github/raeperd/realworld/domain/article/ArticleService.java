@@ -46,7 +46,10 @@ public class ArticleService implements ArticleFindService {
     public Page<Article> getFeedByUserId(long userId, Pageable pageable) {
         return userFindService.findById(userId)
                 .map(user -> articleRepository.findAllByUserFavoritedContains(user, pageable)
-                        .map(article -> article.updateFavoriteByUser(user)))
+                        .map(article -> { // 사용자가 favorite을 누르면 article에서 favorite을 추가한다.
+                            article.userFavorited.contains(user); // boolean
+                            return article; // 현재 인스턴스를 반환한다.
+                        }))
                 .orElseThrow(NoSuchElementException::new);
     }
 
@@ -54,7 +57,10 @@ public class ArticleService implements ArticleFindService {
     public Page<Article> getArticleFavoritedByUsername(UserName username, Pageable pageable) {
         return userFindService.findByUsername(username)
                 .map(user -> articleRepository.findAllByUserFavoritedContains(user, pageable)
-                        .map(article -> article.updateFavoriteByUser(user)))
+                        .map(article -> { // 사용자가 favorite을 누르면 article에서 favorite을 추가한다.
+                            article.userFavorited.contains(user); // boolean
+                            return article; // 현재 인스턴스를 반환한다.
+                        }))
                 .orElse(Page.empty());
     }
 
@@ -103,6 +109,8 @@ public class ArticleService implements ArticleFindService {
     public void deleteArticleBySlug(long userId, String slug) {
         userFindService.findById(userId)
                 .ifPresentOrElse(user -> articleRepository.deleteArticleByAuthorAndContentsTitleSlug(user, slug),
-                        () -> {throw new NoSuchElementException();});
+                        () -> {
+                            throw new NoSuchElementException();
+                        });
     }
 }

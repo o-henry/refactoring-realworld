@@ -53,9 +53,6 @@ public class Article { // JPA 결합되어 있는 엔티티 클래스
     @OneToMany(mappedBy = "article", cascade = {PERSIST, REMOVE})
     private Set<Comment> comments = new HashSet<>();
 
-    @Transient // 데이터베이스에 매핑되지 않는다.
-    boolean favorited = false; // 안티 패턴
-
     // 생성자
     public Article(User author, ArticleContents contents) {
         this.author = author;
@@ -70,14 +67,14 @@ public class Article { // JPA 결합되어 있는 엔티티 클래스
         userFavorited.add(user); // 사용자가 게시글을 좋아요 했음을 추가
         // 게시글의 좋아요 상태를 업데이트
         // 사용자가 favorite을 누르면 article에서 favorite을 추가한다.
-        favorited = userFavorited.contains(user); // boolean
+        userFavorited.contains(user); // boolean
         return this; // 현재 인스턴스를 반환한다.
     }
 
     public Article afterUserUnFavoritesArticle(User user) {
         userFavorited.remove(user);
         // 사용자가 favorite을 누르면 article에서 favorite을 추가한다.
-        favorited = userFavorited.contains(user); // boolean
+        userFavorited.contains(user); // boolean
         return this; // 현재 인스턴스를 반환한다.
     }
 
@@ -121,10 +118,6 @@ public class Article { // JPA 결합되어 있는 엔티티 클래스
 
     public int getFavoritedCount() {
         return userFavorited.size();
-    }
-
-    public boolean isFavorited() {
-        return favorited;
     }
 
     public Set<Comment> getComments() {

@@ -29,7 +29,6 @@ class ArticleModel {
         Set<String> tagList;
         ZonedDateTime createdAt;
         ZonedDateTime updatedAt;
-        boolean favorited;
         int favoritesCount;
         ProfileModelNested author;
 
@@ -42,7 +41,7 @@ class ArticleModel {
                     contents.getTags().stream().map(Tag::toString).collect(toSet()),
                     article.getCreatedAt().atZone(ZoneId.of("Asia/Seoul")),
                     article.getUpdatedAt().atZone(ZoneId.of("Asia/Seoul")),
-                    article.isFavorited(), article.getFavoritedCount(),
+                    article.getFavoritedCount(),
                     ProfileModelNested.fromProfile(article.getAuthor().getProfile())
             );
         }

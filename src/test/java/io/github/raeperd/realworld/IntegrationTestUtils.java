@@ -69,7 +69,6 @@ public class IntegrationTestUtils {
                 jsonPath(path + ".tagList").isNotEmpty(),
                 jsonPath(path + ".createdAt", matchesPattern(ISO_8601_PATTERN)),
                 jsonPath(path + ".updatedAt", matchesPattern(ISO_8601_PATTERN)),
-                jsonPath(path + ".favorited").isBoolean(),
                 jsonPath(path + ".favoritesCount").isNumber(),
                 validProfileModelInPath(path + ".author"));
     }
