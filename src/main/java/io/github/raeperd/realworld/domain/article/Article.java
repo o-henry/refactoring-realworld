@@ -64,18 +64,13 @@ public class Article { // JPA 결합되어 있는 엔티티 클래스
 
 
     public Article afterUserFavoritesArticle(User user) { // 사용자가 게시글을 좋아요 했을 때 호출
-        userFavorited.add(user); // 사용자가 게시글을 좋아요 했음을 추가
-        // 게시글의 좋아요 상태를 업데이트
-        // 사용자가 favorite을 누르면 article에서 favorite을 추가한다.
-        userFavorited.contains(user); // boolean
-        return this; // 현재 인스턴스를 반환한다.
+        userFavorited.add(user);
+        return this;
     }
 
     public Article afterUserUnFavoritesArticle(User user) {
         userFavorited.remove(user);
-        // 사용자가 favorite을 누르면 article에서 favorite을 추가한다.
-        userFavorited.contains(user); // boolean
-        return this; // 현재 인스턴스를 반환한다.
+        return this;
     }
 
     public Comment addComment(User author, String body) { // 매개변수 이름 변경
