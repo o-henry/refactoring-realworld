@@ -68,20 +68,18 @@ public class Article { // JPA 결합되어 있는 엔티티 클래스
 
     public Article afterUserFavoritesArticle(User user) { // 사용자가 게시글을 좋아요 했을 때 호출
         userFavorited.add(user); // 사용자가 게시글을 좋아요 했음을 추가
-        return updateFavoriteByUser(user); // 게시글의 좋아요 상태를 업데이트
-    }
-
-    public Article afterUserUnFavoritesArticle(User user) {
-        userFavorited.remove(user);
-        return updateFavoriteByUser(user);
-    }
-
-    // updateFavoriteByUser(User user): 사용자에 따른 Article의 "favorite" 상태를 업데이트하는 메서드입니다. userFavorited 세트가 사용자를 포함하고 있는지 확인하고, 이에 따라 favorited 필드의 값을 업데이트합니다.
-    public Article updateFavoriteByUser(User user) { // 사용자가 favorite을 누르면 article에서 favorite을 추가한다.
+        // 게시글의 좋아요 상태를 업데이트
+        // 사용자가 favorite을 누르면 article에서 favorite을 추가한다.
         favorited = userFavorited.contains(user); // boolean
         return this; // 현재 인스턴스를 반환한다.
     }
 
+    public Article afterUserUnFavoritesArticle(User user) {
+        userFavorited.remove(user);
+        // 사용자가 favorite을 누르면 article에서 favorite을 추가한다.
+        favorited = userFavorited.contains(user); // boolean
+        return this; // 현재 인스턴스를 반환한다.
+    }
 
     public Comment addComment(User author, String body) { // 매개변수 이름 변경
         final var commentToAdd = new Comment(this, author, body);
