@@ -24,7 +24,7 @@ public class CommentService {
     }
 
     @Transactional
-    public Comment createComment(long userId, String slug, String body) {
+    public Set<Comment> createComment(long userId, String slug, String body) {
         return mapIfAllPresent(userFindService.findById(userId), articleFindService.getArticleBySlug(slug),
                 (user, article) -> user.writeCommentToArticle(article, body))
                 .orElseThrow(NoSuchElementException::new);

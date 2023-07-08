@@ -66,7 +66,7 @@ public class User {
         return article;
     }
 
-    public Comment writeCommentToArticle(Article article, String body) {
+    public Set<Comment> writeCommentToArticle(Article article, String body) {
         return article.addComment(this, body);
     }
 
