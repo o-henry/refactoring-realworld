@@ -8,10 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
@@ -73,10 +70,9 @@ public class Article { // JPA 결합되어 있는 엔티티 클래스
         return this;
     }
 
-    public Comment addComment(User author, String body) { // 매개변수 이름 변경
-        final var commentToAdd = new Comment(this, author, body);
-        comments.add(commentToAdd); // 상태
-        return commentToAdd;
+    public Set<Comment> addComment(User author, String body) {
+        comments.add(new Comment(this, author, body)); // 상태
+        return comments;
     }
 
     public void removeCommentByUser(User user, long commentId) { // 책임 분리 필요
@@ -84,9 +80,11 @@ public class Article { // JPA 결합되어 있는 엔티티 클래스
                 .filter(comment -> comment.getId().equals(commentId))
                 .findFirst()
                 .orElseThrow(NoSuchElementException::new);
+
         if (!user.equals(author) || !user.equals(commentsToDelete.getAuthor())) {
             throw new IllegalAccessError("Not authorized to delete comment");
         }
+
         comments.remove(commentsToDelete);
     }
 
