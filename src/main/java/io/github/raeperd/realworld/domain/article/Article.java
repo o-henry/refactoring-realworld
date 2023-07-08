@@ -76,16 +76,19 @@ public class Article { // JPA 결합되어 있는 엔티티 클래스
     }
 
     public void removeCommentByUser(User user, long commentId) { // 책임 분리 필요
-        final var commentsToDelete = comments.stream()
-                .filter(comment -> comment.getId().equals(commentId))
-                .findFirst()
-                .orElseThrow(NoSuchElementException::new);
 
-        if (!user.equals(author) || !user.equals(commentsToDelete.getAuthor())) {
+        if (!user.equals(author) || !user.equals(getCommentsToDelete(commentId).getAuthor())) {
             throw new IllegalAccessError("Not authorized to delete comment");
         }
 
-        comments.remove(commentsToDelete);
+        comments.remove(getCommentsToDelete(commentId));
+    }
+
+    private Comment getCommentsToDelete(long commentId) {
+        return comments.stream()
+                .filter(comment -> comment.getId().equals(commentId))
+                .findFirst()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public void updateArticle(ArticleUpdateRequest updateRequest) {
