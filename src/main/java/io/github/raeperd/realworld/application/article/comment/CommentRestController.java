@@ -23,7 +23,7 @@ class CommentRestController {
     public CommentModel postComments(@AuthenticationPrincipal UserJWTPayload jwtPayload,
                                      @PathVariable String slug, @Valid @RequestBody CommentPostRequestDTO dto) {
         final var commentAdded = commentService.createComment(jwtPayload.getUserId(), slug, dto.getBody());
-        return CommentModel.fromComment(commentAdded);
+        return CommentModel.fromComment(commentAdded.iterator().next()); // TODO("리팩토링 필요")
     }
 
     @GetMapping("/articles/{slug}/comments")
