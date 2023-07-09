@@ -8,7 +8,6 @@ import lombok.Value;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.WRAPPER_OBJECT;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
-import static io.github.raeperd.realworld.domain.article.ArticleUpdateRequest.builder;
 import static java.util.Optional.ofNullable;
 
 @JsonTypeName("article")
@@ -21,7 +20,7 @@ class ArticlePutRequestDTO {
     String body;
 
     ArticleUpdateRequest toUpdateRequest() {
-        return builder().titleToUpdate(ofNullable(title).map(ArticleTitle::of).orElse(null))
+        return ArticleUpdateRequest.builder().titleToUpdate(ofNullable(title).map(ArticleTitle::of).orElse(null))
                 .descriptionToUpdate(description)
                 .bodyToUpdate(body)
                 .build();
