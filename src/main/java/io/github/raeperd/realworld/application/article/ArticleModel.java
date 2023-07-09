@@ -39,8 +39,8 @@ class ArticleModel {
                     titleFromArticle.getSlug(), titleFromArticle.getTitle(),
                     contents.getDescription(), contents.getBody(),
                     contents.getTags().stream().map(Tag::toString).collect(toSet()),
-                    article.getCreatedAt().atZone(ZoneId.of("Asia/Seoul")),
-                    article.getUpdatedAt().atZone(ZoneId.of("Asia/Seoul")),
+                    article.createdAt.atZone(ZoneId.of("Asia/Seoul")),
+                    article.updatedAt.atZone(ZoneId.of("Asia/Seoul")),
                     article.getFavoritedCount(),
                     ProfileModelNested.fromProfile(article.getAuthor().getProfile())
             );
